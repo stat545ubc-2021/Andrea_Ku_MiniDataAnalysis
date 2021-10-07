@@ -1,0 +1,135 @@
+---
+title: "AKu_MiniAnalysis_1"
+author: "Andrea_Ku"
+date: "10/6/2021"
+output: html_document
+---
+
+`
+# **Milestone 1- Mini Data Analysis Project**
+
+The purpose of this mini data analysis is to learn how to work through a data analysis while creating a clear markdown file. 
+
+#Install and load the packages
+install.packages("devtools")
+devtools::install_github("UBC-MDS/datateachr")
+
+library(datateachr)
+library(tidyverse)
+
+# **Task 1- Choose your favorite dataset**
+
+#**1.1 Choose 4 of the datateachr packages that appeal to you**
+ 1. building_permits
+ 2. flow_sample
+ 3. steam_games
+ 4. vancouver_trees
+ 
+#**1.2 Explore the dataset**
+
+# Explore building_permits and view dataset
+#What dataframe?
+class(building_permits)
+# What dimensions in the data frame?
+dim(building_permits)
+# How many rows is the data? To guage data complexity
+nrow(building_permits)
+# How many columns is the data? To guage data complexity
+ncol(building_permits)
+# Print the data
+glimpse(building_permits)
+
+# Explore flow_sample and view dataset
+view(flow_sample)
+#What dataframe?
+class(flow_sample)
+# What dimensions in the data frame?
+dim(flow_sample)
+# How many rows is the data? To guage data complexity
+nrow(flow_sample)
+# How many columns is the data? To guage data complexity
+ncol(flow_sample)
+# Print the data
+glimpse(flow_sample)
+
+# Explore steam_games and view dataset
+#What dataframe?
+class(steam_games)
+# What dimensions in the data frame?
+dim(steam_games)
+# How many rows is the data? To guage data complexity
+nrow(steam_games)
+# How many columns is the data? To guage data complexity
+ncol(steam_games)
+# Print the data
+glimpse(steam_games)
+
+# Explore vancouver_trees and view dataset
+view(vancouver_trees)
+#What dataframe?
+class(vancouver_trees)
+# What dimensions in the data frame?
+dim(vancouver_trees)
+# How many rows is the data? To guage data complexity
+nrow(vancouver_trees)
+# How many columns is the data? To guage data complexity
+ncol(vancouver_trees)
+# Print the data
+glimpse(vancouver_trees)
+
+# **1.3 Narrow down to 2**
+From the selected dataframes, I am most interested in the vancouver_trees dataset and the flow_sample datasets. After reviewing the data that each set contains, I found the flow_sample dataset to be interesting, relevant, and familiar for me, as my interest is in environmental studies. My previous projects looks at guage station data, so the information provided in the flow_sample was more intuitive for me to understand. Similarly, I also chose the vancouver_trees dataset because I think tree identification and measurements are similar to the kind of data I will be working with in my field. Data about trees also interest me because I will likely continue to work with trees moving forward into my career, so the vancouver_trees dataset is both familiar and relevant for me. 
+
+#**1.4 Potential research question with each dataset**
+Potential question for the flow_sample dataset:
+What is the relationship between month and flow? How do the flow patterns vary each month?
+
+Potential question for the vancouver_trees dataset:
+How does the date that the tree was planted relate to the neighborhood? Were the measured trees planted in the same neighborhood at the same time, or were the planted in neighborhoods sporadically? What is the distribution of diameters measured?
+
+Final Decision: I've decided to use the flow_sample dataset for my Mini Data Analysis. The flow_sample dataset is more straightforward for me to understand, and is just as relevant for my future work in the environmental sector.
+
+# **Task 2: Exploring your dataset**
+
+# **2.1 Dive deeper into your data**
+
+#1. Plot the distribution of a numeric variable:
+# Plot the flow per month accross the dataset to visually see which months have greater flow values. Use the jitter as geometry so we can better distinguish the distribution. 
+Flow_by_month <- ggplot(flow_sample) +
+    geom_jitter(aes(x = month, y = flow), alpha = 0.1)
+print(Flow_by_month)
+
+# 2. Explore the relationship between 2 variables in a plot:
+# Plot the minimum and maximum flows over months in seperate plots to see the range of flow within each month for each extreme
+# Facet the plot to seperate the minimum and maximum, so we can more effectively see the range of values
+Extreme_Flow_Month <- ggplot(flow_sample,
+                    aes(month, flow)) +
+                    facet_wrap(~ extreme_type, scales = "free_y")+
+ geom_point(aes(color = extreme_type),
+            size = 3,
+            alpha = 0.8)
+            guides(color = FALSE)
+print(Extreme_Flow_Month)
+
+# 3. Filter observations according to decades, where we can look at recent data starting in 2000
+
+answer2.13 <- flow_sample %>% 
+   filter(year > "2000") %>% 
+   ggplot(aes(month, extreme_type)) +
+   ggridges::geom_density_ridges()
+print(answer2.13)
+
+# 4. 
+
+
+# **2.2 Explain the exercise in relation to flow_samples**
+# For plotting the numeric values:
+I will plot the distribution of flow to see how the flow varies for the samples taken across the months. This will help me determine the range of stream flow that is occurring in the dataset, and get a better sense of the environment I am working in and when the flow seasons are. According to the plot, it seem like month 5-7 have peak flow, which is May, June, and July. 
+
+# For exploring the relationship between 2 variables in a plot:
+Although the previous plot also showed the range of flow over months, I thought it would be interesting to distinguish the range of flow for both the minimum and maximum extreme over the course of the year. This is to show 1) which month are there minimums and maximum, and 2) within each extreme type, what is the range in the extreme? What is the range of the minimum flow? And what is the range of the maximum flow? Are there months where the maximum flow have a greater range? When are the months where the minimum flows have the least range? These questions can help be explained by exploring the relationship in these variables.
+
+
+
+
+# 
