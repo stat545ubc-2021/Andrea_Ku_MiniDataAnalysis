@@ -13,7 +13,7 @@ The purpose of this mini data analysis is to learn how to work through a data an
 
 Install and load the packages
 
-```{r, error = TRUE}
+```{r}
 #install.packages("devtools")
 #devtools::install_github("UBC-MDS/datateachr")
 
@@ -38,92 +38,92 @@ library(tidyverse)
 Explore **building_permits** dataset
 
 What dataframe?
-```{r, error = TRUE}
+```{r}
 class(building_permits)
 ```
 What dimensions in the data frame?
-```{r, error = TRUE}
+```{r}
 dim(building_permits)
 ```
 How many rows is the data? To guage data complexity
-```{r, error = TRUE}
+```{r}
 nrow(building_permits)
 ```
 How many columns is the data? To guage data complexity
-```{r, error = TRUE}
+```{r}
 ncol(building_permits)
 ```
 Print the data
-```{r, error = TRUE}
+```{r}
 glimpse(building_permits)
 ```
 
 Explore **flow_sample** dataset
 
 What dataframe?
-```{r, error = TRUE}
+```{r}
 class(flow_sample)
 ```
 What dimensions in the data frame?
-```{r, error = TRUE}
+```{r}
 dim(flow_sample)
 ```
 How many rows is the data? To guage data complexity
-```{r, error = TRUE}
+```{r}
 nrow(flow_sample)
 ```
 How many columns is the data? To guage data complexity
-```{r, error = TRUE}
+```{r}
 ncol(flow_sample)
 ```
 Print the data
-```{r, error = TRUE}
+```{r}
 glimpse(flow_sample)
 ```
 
 Explore **steam_games** dataset
 
 What dataframe?
-```{r, error = TRUE}
+```{r}
 class(steam_games)
 ```
 What dimensions in the data frame?
-```{r, error = TRUE}
+```{r}
 dim(steam_games)
 ```
 How many rows is the data? To guage data complexity
-```{r, error = TRUE}
+```{r}
 nrow(steam_games)
 ```
 How many columns is the data? To guage data complexity
-```{r, error = TRUE}
+```{r}
 ncol(steam_games)
 ```
 Print the data
-```{r, error = TRUE}
+```{r}
 glimpse(steam_games)
 ```
 
 Explore **vancouver_trees** dataset
 
 What dataframe?
-```{r, error = TRUE}
+```{r}
 class(vancouver_trees)
 ```
 What dimensions in the data frame?
-```{r, error = TRUE}
+```{r}
 dim(vancouver_trees)
 ```
 How many rows is the data? To guage data complexity
-```{r, error = TRUE}
+```{r}
 nrow(vancouver_trees)
 ```
 How many columns is the data? To guage data complexity
-```{r, error = TRUE}
+```{r}
 ncol(vancouver_trees)
 ```
 Print the data
-```{r, error = TRUE}
+```{r}
 glimpse(vancouver_trees)
 ```
 
@@ -150,7 +150,7 @@ How does the date that the tree was planted relate to the neighborhood? Were the
 1. Plot the distribution of a numeric variable:
 Plot the distribution of when the data was taken to see if there were years or months that more data was taken than others. Use the jitter as geometry so we can better distinguish the distribution. 
 
-```{r, error = TRUE}
+```{r}
 sample_dist <- ggplot(flow_sample) +
     geom_jitter(aes(x = year, y = month), alpha = 0.1)
 print(sample_dist)
@@ -159,7 +159,7 @@ print(sample_dist)
 2. Explore the relationship between 2 variables in a plot:
 Plot the minimum and maximum flows over months in seperate plots to see the range of flow within each month for each extreme. Facet the plot to seperate the minimum and maximum, so we can more effectively see the range of values
 
-```{r, error = TRUE}
+```{r}
 Extreme_Flow_Month <- ggplot(flow_sample,
                     aes(month, flow)) +
                     facet_wrap(~ extreme_type, scales = "free_y")+
@@ -173,7 +173,7 @@ print(Extreme_Flow_Month)
 3. Filter observations according to time, where we can look at recent data starting in 1960, and before 1960. Then plot the observations to see if flow has changed over the century.
 Filter for recent years, from 1960 till present
 
-```{r, error = TRUE}
+```{r}
 MaxSince_1960 <- flow_sample %>%
   filter(year > 1960, extreme_type == "maximum")
 print(MaxSince_1960)
@@ -181,7 +181,7 @@ print(MaxSince_1960)
 
 Plot the flow for years 1960-present
 
-```{r, error = TRUE}
+```{r}
 MaxSince_1960_plot <- ggplot(MaxSince_1960) +
     geom_point(aes(x = year, y = flow), alpha = 0.1)
 print(MaxSince_1960_plot)
@@ -189,7 +189,7 @@ print(MaxSince_1960_plot)
 
 Filter for historical years, since before 1960 
 
-```{r, error = TRUE}
+```{r}
 MaxBefore_1960 <- flow_sample %>%
   filter(year < 1960, extreme_type == "maximum")
 print(MaxBefore_1960)
@@ -197,7 +197,7 @@ print(MaxBefore_1960)
 
 Plot the flow for historical years, since before 1960
 
-```{r, error = TRUE}
+```{r}
 MaxBefore_1960_plot <- ggplot(MaxBefore_1960) +
     geom_point(aes(x = year, y = flow), alpha = 0.1)
 print(MaxBefore_1960_plot)
@@ -207,7 +207,7 @@ print(MaxBefore_1960_plot)
 4. Plot the flow in boxplots to see the distribution within minimum and maximum flows
 Filter by Maximum Flow
 
-```{r, error = TRUE}
+```{r}
 Max_only <- flow_sample %>%
   filter(extreme_type == "maximum")
 print(Max_only)
@@ -215,7 +215,7 @@ print(Max_only)
 
 Plot the distribution of Max flow by Box plot
 
-```{r, error = TRUE}
+```{r}
 Max_Box <- ggplot(Max_only, aes(extreme_type, flow)) + 
     geom_boxplot(width = 0.2)
 print(Max_Box)
@@ -223,7 +223,7 @@ print(Max_Box)
 
 Filter by minimum flow
 
-```{r, error = TRUE}
+```{r}
 Min_only <- flow_sample %>%
   filter(extreme_type == "minimum")
 print(Min_only)
@@ -231,7 +231,7 @@ print(Min_only)
 
 Plot the distribution of Min flow by box plot
 
-```{r, error = TRUE}
+```{r}
 Min_Box <- ggplot(Min_only, aes(extreme_type, flow)) + 
     geom_boxplot(width = 0.2)
 print(Min_Box)
