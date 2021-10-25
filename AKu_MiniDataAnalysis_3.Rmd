@@ -1,0 +1,211 @@
+---
+title: "Mini Data Analysis Deliverable 3"
+author: "Andrea_Ku"
+date: "10/24/2021"
+output: github_document
+---
+
+# Welcome to your last milestone in your mini data analysis project!
+
+# Setup
+
+Begin by loading your data and the tidyverse package below: 
+
+```{r, message = FALSE}
+library(datateachr) # <- might contain the data you picked!
+library(tidyverse)
+library(broom)
+```
+
+From Milestone 2, my two research questions were:
+
+1. How does the pattern of flow change over the seasons?
+2. Are there changes in flow patterns by decade?
+
+# Exercise 1: Special Data Types
+
+### The modified plot from Milestone 1 shows the range of flow values for minimum and maximum extremes for each season.
+
+```{r}
+Extreme_Flow_Month <- ggplot(flow_sample_Seasons,
+                    aes(season, flow)) +
+                    facet_wrap(~ extreme_type, scales = "free_y")+
+ geom_point(aes(color = extreme_type),
+            size = 3,
+            alpha = 0.8)
+            guides(color = FALSE)
+print(Extreme_Flow_Month)
+```
+
+
+## *Task 1:* Produce a new plot that reorders a factor in your original plot, using the forcats package
+
+### First, I reordered the seasons from "autumn", "spring", "summer", "winter", to "winter", "spring", "summer", "autumn". 
+
+### Justification: I reordered the seasons to make more sense intuitively according to the months that coorespond to each season in a calendar year. For winter, there are 2 months, January and Febrary, that start at the beginning of the year, compared to December, which is considered at the end of the year. Since there are 2 out of 3 months in winter that are considered the beginning of the year, I decided to have Winter be the starting season. For the following seasons: March, April, and May coorespond with Spring; June, July, and August coorespond with Summer; September, October, and November coorespond with Autumn.
+
+
+```{r}
+# Before:
+ggplot(flow_sample_Seasons, aes(season)) + geom_bar()
+```
+
+```{r}
+# Reorder the seasons using fct_rev
+Reorder <- flow_sample_Seasons %>%
+   mutate(season = fct_rev(season))
+head(Reorder)
+
+# Makes changes under the hood, so you will not outwardly see the changes
+attributes(Reorder$season)
+
+# After:
+ggplot(Reorder, aes(season)) + geom_bar()
+```
+
+```{r}
+# Plot again to see the reordered seasons 
+Extreme_Flow_Month2 <- ggplot(Reorder,
+                    aes(season, flow)) +
+                    facet_wrap(~ extreme_type, scales = "free_y")+
+ geom_point(aes(color = extreme_type),
+            size = 3,
+            alpha = 0.8)
+            guides(color = FALSE)
+print(Extreme_Flow_Month2)
+```
+
+
+## *Task 2:* Produce a new plot that groups some factor levels together into an “other” category
+
+### Group all seasons except spring into one category called "other" to differentiate the difference between the spring flow values and the flow values from the other seasons.
+
+### Reasoning: I chose this grouping because Spring is the only season with both miniumum and maximum values, therefore it is interesting to see how the spring data compares with the data from the other seasons in each extreme type. Therefore, I categorized Summer, Winter, and Autumn into a category called "other", and left Spring available for comparison. 
+
+```{r}
+# Collapse the data using fct_collapse to put all categories except spring into one category
+Spring <- flow_sample_Seasons %>% 
+  mutate(season = fct_collapse(season, other = c("autumn", "summer", "winter")))
+print(Spring)
+```
+
+```{r}
+Extreme_Flow_Month3 <- ggplot(Spring_summer,
+                    aes(season, flow)) +
+                    facet_wrap(~ extreme_type, scales = "free_y")+
+ geom_point(aes(color = extreme_type),
+            size = 3,
+            alpha = 0.8)
+            guides(color = FALSE)
+print(Extreme_Flow_Month3)
+```
+
+
+# Exercise 2: Modelling
+
+## 2.0 
+
+**Research Question**: 1. How does the pattern of flow change over the seasons?
+
+**Variable of interest**: Flow
+
+
+## 2.1
+
+### Fit a model that makes predictions on flow using Season, by using the lm() function.
+
+```{r}
+#creates a linear model
+model <- lm(flow ~ season, data = flow_sample_Seasons)
+#See the model results
+summary(model)
+
+```
+
+## 2.2
+
+### Produce regression coefficients, fitted values and residuals, and an rsquared value from the fitted model using the broom package.
+
+```{r}
+# Tidy the model in broom to output a tibble for coefficients
+tidy(model)
+```
+```{r}
+# Use broom package to output a tibble for fitted values and residuals
+augment(model)
+```
+
+```{r}
+# Output a tibble for summary statistics
+glance(model)
+```
+
+# Exercise 3: Reading and writing data
+
+Get set up for this exercise by making a folder called `output` in the top level of your project folder / repository. You'll be saving things there. 
+
+## 3.1 (5 points)
+
+Take a summary table that you made from Milestone 2 (Exercise 1.2), and write it as a csv file in your `output` folder. Use the `here::here()` function.
+
+- **Robustness criteria**: You should be able to move your Mini Project repository / project folder to some other location on your computer, or move this very Rmd file to another location within your project repository / folder, and your code should still work.
+- **Reproducibility criteria**: You should be able to delete the csv file, and remake it simply by knitting this Rmd file. 
+  
+<!-------------------------- Start your work below ---------------------------->
+
+
+<!----------------------------------------------------------------------------->
+
+## 3.2 (5 points)
+
+Write your model object from Exercise 2 to an R binary file (an RDS), and load it again. Be sure to save the binary file in your `output` folder. Use the functions `saveRDS()` and `readRDS()`. 
+
+- The same robustness and reproducibility criteria as in 3.1 apply here.
+
+<!-------------------------- Start your work below ---------------------------->
+
+
+<!----------------------------------------------------------------------------->
+
+# Tidy Repository
+
+Now that this is your last milestone, your entire project repository should be organized. Here are the criteria we're looking for.
+
+## Main README (3 points)
+
+There should be a file named `README.md` at the top level of your repository. Its contents should automatically appear when you visit the repository on GitHub. 
+
+Minimum contents of the README file:
+
+- In a sentence or two, explains what this repository is, so that future-you or someone else stumbling on your repository can be oriented to the repository.
+- In a sentence or two (or more??), briefly explains how to engage with the repository. You can assume the person reading knows the material from STAT 545A. Basically, if a visitor to your repository wants to explore your project, what should they know?
+
+Once you get in the habit of making README files, and seeing more README files in other projects, you'll wonder how you ever got by without them! They are tremendously helpful.
+
+## File and Folder structure (3 points)
+
+You should have at least four folders in the top level of your repository: one for each milestone, and one output folder. If there are any other folders, these are explained in the main README.
+
+Each milestone document is contained in its respective folder, and nowhere else. 
+
+Every level-1 folder (that is, the ones stored in the top level, like "Milestone1" and "output") has a `README` file, explaining in a sentence or two what is in the folder, in plain language (it's enough to say something like "This folder contains the source for Milestone 1").
+
+## Output (2 points)
+
+All output is recent and relevant: 
+
+- All Rmd files have been `knit`ted to their output, and all data files saved from Exercise 3 above appear in the `output` folder. 
+- All of these output files are up-to-date -- that is, they haven't fallen behind after the source (Rmd) files have been updated.
+- There should be no relic output files. For example, if you were knitting an Rmd to html, but then changed the output to be only a markdown file, then the html file is a relic and should be deleted. 
+
+Our recommendation: delete all output files, and re-knit each milestone's Rmd file, so that everything is up to date and relevant. 
+
+PS: there's a way where you can run all project code using a single command, instead of clicking "knit" three times. More on this in STAT 545B!
+
+## Error-free code (1 point)
+
+This Milestone 3 document knits error-free. (We've already graded this aspect for Milestone 1 and 2)
+
+## Tagged release (1 point)
+
+You've tagged a release for Milestone 3. (We've already graded this aspect for Milestone 1 and 2)
