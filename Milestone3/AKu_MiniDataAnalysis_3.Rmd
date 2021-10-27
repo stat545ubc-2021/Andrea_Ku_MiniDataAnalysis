@@ -1,0 +1,205 @@
+---
+title: "Mini Data Analysis Deliverable 3"
+author: "Andrea_Ku"
+date: "10/24/2021"
+output: github_document
+---
+
+# Welcome to your last milestone in your mini data analysis project!
+
+# Setup
+
+Begin by loading your data and the tidyverse package below: 
+
+```{r, message = FALSE}
+library(datateachr) # <- might contain the data you picked!
+library(tidyverse)
+library(broom)
+```
+
+From Milestone 2, my two research questions were:
+
+1. How does the pattern of flow change over the seasons?
+2. Are there changes in flow patterns by decade?
+
+# Exercise 1: Special Data Types
+
+### The modified plot from Milestone 1 shows the range of flow values for minimum and maximum extremes for each season.
+```{r}
+# From Milestone 2: Create a new column for each season
+flow_sample_Seasons <- flow_sample %>% 
+   mutate(season = case_when(month < 3 ~ "winter",
+                                 month < 6 ~ "spring",
+                                 month < 9 ~ "summer",
+                                 month < 12 ~ "autumn",
+                                 TRUE ~ "winter"))
+print(flow_sample_Seasons)
+```
+
+```{r}
+# From Milestone 1(modified):
+# Show range of flow values in each month by extreme type
+Extreme_Flow_Month <- ggplot(flow_sample_Seasons,
+                    aes(season, flow)) +
+                    facet_wrap(~ extreme_type, scales = "free_y")+
+ geom_point(aes(color = extreme_type),
+            size = 3,
+            alpha = 0.8)
+            guides(color = FALSE)
+print(Extreme_Flow_Month)
+```
+
+
+## Task 1: Produce a new plot that reorders a factor in your original plot, using the forcats package
+
+##### First, I reordered the seasons from ["autumn", "spring", "summer", "winter"], to ["winter", "spring", "summer", "autumn"]. 
+
+##### Justification: I reordered the seasons to make more sense intuitively according to the months that coorespond to each season in a calendar year. For winter, there are 2 months, January and Febrary, that start at the beginning of the year, compared to December, which is considered at the end of the year. Since there are 2 out of 3 months in winter that are considered the beginning of the year, I decided to have Winter be the starting season. For the following seasons: March, April, and May coorespond with Spring; June, July, and August coorespond with Summer; September, October, and November coorespond with Autumn.
+
+
+```{r}
+# Before changes are made, notice the order of each bar:
+# *Note* this is not my chosen plot for Task 1, just a visualization of the changes made
+ggplot(flow_sample_Seasons, aes(season)) + geom_bar()
+```
+
+```{r}
+# Reorder the seasons using fct_rev
+Reorder <- flow_sample_Seasons %>%
+   mutate(season = fct_rev(season))
+head(Reorder)
+
+# Makes changes under the hood, so you will not outwardly see the changes
+attributes(Reorder$season)
+
+# After changes are made, notice the order of each bar:
+# *Note* this is not my chosen plot for Task 1, just a visualization of the changes made
+ggplot(Reorder, aes(season)) + geom_bar()
+```
+
+```{r}
+# Plot again to see the reordered seasons 
+Extreme_Flow_Month2 <- ggplot(Reorder,
+                    aes(season, flow)) +
+                    facet_wrap(~ extreme_type, scales = "free_y")+
+ geom_point(aes(color = extreme_type),
+            size = 3,
+            alpha = 0.8)
+            guides(color = FALSE)
+print(Extreme_Flow_Month2)
+```
+
+
+## Task 2: Produce a new plot that groups some factor levels together into an “other” category
+
+##### Group all seasons except spring into one category called "other" to differentiate the difference between the spring flow values and the flow values from the other seasons.
+
+##### Reasoning: I chose this grouping because Spring is the only season with both miniumum and maximum values, therefore it is interesting to see how the spring data compares with the data from the other seasons in each extreme type. Therefore, I categorized Summer, Winter, and Autumn into a category called "other", and left Spring available for comparison. 
+
+```{r}
+# Collapse the data using fct_collapse to put all categories except spring into one category
+Spring <- flow_sample_Seasons %>% 
+  mutate(season = fct_collapse(season, other = c("autumn", "summer", "winter")))
+print(Spring)
+```
+
+```{r}
+# Plot the collapsed data to show "other" and "spring" data
+Extreme_Flow_Month3 <- ggplot(Spring,
+                    aes(season, flow)) +
+                    facet_wrap(~ extreme_type, scales = "free_y")+
+ geom_point(aes(color = extreme_type),
+            size = 3,
+            alpha = 0.8)
+            guides(color = FALSE)
+print(Extreme_Flow_Month3)
+```
+
+
+# Exercise 2: Modelling
+
+## 2.0 
+
+**Research Question**: 1. How does the pattern of flow change over the seasons?
+
+**Variable of interest**: Flow
+
+
+## 2.1
+
+### Fit a model that makes predictions on flow using Season, by using the lm() function.
+
+```{r}
+# Creates a linear model
+model <- lm(flow ~ season, data = flow_sample_Seasons)
+# See the model results
+summary(model)
+
+```
+
+## 2.2
+
+### Produce regression coefficients, fitted values and residuals, and an rsquared value from the fitted model using the broom package.
+
+```{r}
+# Tidy the model in broom to output a tibble for coefficients
+tidy(model)
+```
+```{r}
+# Use broom package to output a tibble for fitted values and residuals
+augment(model)
+```
+
+```{r}
+# Output a tibble for summary statistics
+glance(model)
+```
+
+# Exercise 3: Reading and writing data
+
+## 3.1 (5 points)
+
+Take a summary table that you made from Milestone 2, and write it as a csv file in your `output` folder:
+
+```{r}
+#This is the summary statistics table in Milestone 2 used to write into a csv
+FlowSeasons_summaryMax <- flow_sample_Seasons %>% 
+  filter(extreme_type == 'maximum') %>% 
+              group_by(season) %>%
+  summarise(range = range(flow),
+            mean = mean(flow),
+            min = min(flow),
+            max = max(flow),
+            median = median(flow),
+            stdDev = sd(flow))
+print(FlowSeasons_summaryMax)
+```
+
+
+```{r}
+# Process to write into a csv file:
+
+# Use here::here to find the path
+here::here()
+
+# create an output file
+#dir.create(here::here("output"))
+
+# write the summary statistics into a csv file
+write_csv(FlowSeasons_summaryMax, here::here("output", "FlowSeasons_summaryMax.csv"))
+
+```
+
+## 3.2 (5 points)
+
+Write your model object from Exercise 2 to an R binary file (an RDS), and load it again. Be sure to save the binary file in your `output` folder. 
+```{r}
+# Save the model to an RDS
+saveRDS(model, here::here("output", "model.rds"))
+
+# Read the model by accessing the output folder with here::here
+modelRDS <- readRDS(here::here("output", "model.rds"))
+modelRDS
+
+```
+
