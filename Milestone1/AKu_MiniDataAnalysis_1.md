@@ -33,17 +33,24 @@ library(tidyverse)
 
 **1.1 Choose 4 of the datateachr packages that appeal to you**
 
-1.  building_permits
+1.  building_permits: Acquired courtesy of The City of Vancouver’s Open
+    Data Portal. It currently has 20680 rows and 14 columns.
 
-2.  flow_sample
+2.  flow_sample: Acquired courtesy of The Government of Canada’s
+    Historical Hydrometric Database. It currently has 218 rows and 7
+    columns.
 
-3.  steam_games
+3.  steam_games: steam_games: Acquired courtesy of Kaggle. It currently
+    has 40833 rows and 21 columns.
 
-4.  vancouver_trees
+4.  vancouver_trees: Acquired courtesy of The City of Vancouver’s Open
+    Data Portal. It currently has 146611 rows and 20 columns
 
 **1.2 Explore the dataset**
 
 Explore **building_permits** dataset
+
+##### The **building_permits** dataset has information about the building, including the location, the permit information, the contractor, and the intended use of the property.
 
 What dataframe?
 
@@ -60,22 +67,6 @@ dim(building_permits)
 ```
 
     ## [1] 20680    14
-
-How many rows is the data? To guage data complexity
-
-``` r
-nrow(building_permits)
-```
-
-    ## [1] 20680
-
-How many columns is the data? To guage data complexity
-
-``` r
-ncol(building_permits)
-```
-
-    ## [1] 14
 
 Print the data
 
@@ -102,6 +93,8 @@ glimpse(building_permits)
 
 Explore **flow_sample** dataset
 
+##### The **flow_sample** dataset has information about the flow at a specific station over several decades, including information about the time that the data was collected.
+
 What dataframe?
 
 ``` r
@@ -117,22 +110,6 @@ dim(flow_sample)
 ```
 
     ## [1] 218   7
-
-How many rows is the data? To guage data complexity
-
-``` r
-nrow(flow_sample)
-```
-
-    ## [1] 218
-
-How many columns is the data? To guage data complexity
-
-``` r
-ncol(flow_sample)
-```
-
-    ## [1] 7
 
 Print the data
 
@@ -168,22 +145,6 @@ dim(steam_games)
 
     ## [1] 40833    21
 
-How many rows is the data? To guage data complexity
-
-``` r
-nrow(steam_games)
-```
-
-    ## [1] 40833
-
-How many columns is the data? To guage data complexity
-
-``` r
-ncol(steam_games)
-```
-
-    ## [1] 21
-
 Print the data
 
 ``` r
@@ -216,6 +177,8 @@ glimpse(steam_games)
 
 Explore **vancouver_trees** dataset
 
+##### The **vancouver_trees** dataset has information about the physical and identifing characteristics of the tree and the location of the tree within the city.
+
 What dataframe?
 
 ``` r
@@ -233,20 +196,6 @@ dim(vancouver_trees)
     ## [1] 146611     20
 
 How many rows is the data? To guage data complexity
-
-``` r
-nrow(vancouver_trees)
-```
-
-    ## [1] 146611
-
-How many columns is the data? To guage data complexity
-
-``` r
-ncol(vancouver_trees)
-```
-
-    ## [1] 20
 
 Print the data
 
@@ -328,7 +277,7 @@ print(sample_dist)
 
     ## Warning: Removed 2 rows containing missing values (geom_point).
 
-![](AKu_MiniDataAnalysis_1_files/figure-gfm/unnamed-chunk-22-1.png)<!-- -->
+![](AKu_MiniDataAnalysis_1_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
 
 2.  Explore the relationship between 2 variables in a plot: Plot the
     minimum and maximum flows over months in seperate plots to see the
@@ -361,7 +310,7 @@ print(Extreme_Flow_Month)
 
     ## Warning: Removed 2 rows containing missing values (geom_point).
 
-![](AKu_MiniDataAnalysis_1_files/figure-gfm/unnamed-chunk-23-1.png)<!-- -->
+![](AKu_MiniDataAnalysis_1_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
 
 3.  Filter observations according to time, where we can look at recent
     data starting in 1960, and before 1960. Then plot the observations
@@ -397,7 +346,7 @@ MaxSince_1960_plot <- ggplot(MaxSince_1960) +
 print(MaxSince_1960_plot)
 ```
 
-![](AKu_MiniDataAnalysis_1_files/figure-gfm/unnamed-chunk-25-1.png)<!-- -->
+![](AKu_MiniDataAnalysis_1_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
 
 Filter for historical years, since before 1960
 
@@ -430,7 +379,7 @@ MaxBefore_1960_plot <- ggplot(MaxBefore_1960) +
 print(MaxBefore_1960_plot)
 ```
 
-![](AKu_MiniDataAnalysis_1_files/figure-gfm/unnamed-chunk-27-1.png)<!-- -->
+![](AKu_MiniDataAnalysis_1_files/figure-gfm/unnamed-chunk-19-1.png)<!-- -->
 
 4.  Plot the flow in boxplots to see the distribution within minimum and
     maximum flows Filter by Maximum Flow
@@ -464,7 +413,7 @@ Max_Box <- ggplot(Max_only, aes(extreme_type, flow)) +
 print(Max_Box)
 ```
 
-![](AKu_MiniDataAnalysis_1_files/figure-gfm/unnamed-chunk-29-1.png)<!-- -->
+![](AKu_MiniDataAnalysis_1_files/figure-gfm/unnamed-chunk-21-1.png)<!-- -->
 
 Filter by minimum flow
 
@@ -499,7 +448,7 @@ print(Min_Box)
 
     ## Warning: Removed 2 rows containing non-finite values (stat_boxplot).
 
-![](AKu_MiniDataAnalysis_1_files/figure-gfm/unnamed-chunk-31-1.png)<!-- -->
+![](AKu_MiniDataAnalysis_1_files/figure-gfm/unnamed-chunk-23-1.png)<!-- -->
 
 **2.2 Explain the exercise in relation to flow_samples**
 
