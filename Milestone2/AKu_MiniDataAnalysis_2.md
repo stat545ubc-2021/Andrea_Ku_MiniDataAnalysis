@@ -42,9 +42,7 @@ range of flow from 1960 to present day?*
 ``` r
 flow_sample_PeriodMax <- flow_sample %>% 
   filter(extreme_type == 'maximum') %>%  
-  mutate(Period = case_when(year > 1960 ~ "Since_1960",
-                             year < 1960 ~ "Before_1960",
-                             TRUE ~ "UNK"))
+  mutate(Period = case_when(year > 1959 ~ "Since_1960", TRUE ~ "Before_1960"))
 print(flow_sample_PeriodMax)
 ```
 
@@ -84,16 +82,14 @@ FlowPeriod_summaryMax <- flow_sample_PeriodMax %>%
 print(FlowPeriod_summaryMax)
 ```
 
-    ## # A tibble: 6 x 7
-    ## # Groups:   Period [3]
+    ## # A tibble: 4 x 7
+    ## # Groups:   Period [2]
     ##   Period      range  mean   min   max median stdDev
     ##   <chr>       <dbl> <dbl> <dbl> <dbl>  <dbl>  <dbl>
     ## 1 Before_1960   121  221.   121   377    214   59.0
     ## 2 Before_1960   377  221.   121   377    214   59.0
-    ## 3 Since_1960    107  205.   107   466    191   64.0
-    ## 4 Since_1960    466  205.   107   466    191   64.0
-    ## 5 UNK           182  182    182   182    182   NA  
-    ## 6 UNK           182  182    182   182    182   NA
+    ## 3 Since_1960    107  205.   107   466    191   63.5
+    ## 4 Since_1960    466  205.   107   466    191   63.5
 
 #### Graphing
 
@@ -122,11 +118,7 @@ seasons?*
 ``` r
 # Create new column for each season
 flow_sample_Seasons <- flow_sample %>% 
-   mutate(season = case_when(month < 3 ~ "winter",
-                                 month < 6 ~ "spring",
-                                 month < 9 ~ "summer",
-                                 month < 12 ~ "autumn",
-                                 TRUE ~ "winter"))
+   mutate(season = case_when(month < 3 ~ "winter", month < 6 ~ "spring", month < 9 ~ "summer", TRUE ~ "autumn"))
 print(flow_sample_Seasons)
 ```
 
@@ -163,9 +155,9 @@ print(nExtremeType)
     ##   <chr>        <chr>  <int>
     ## 1 maximum      spring    16
     ## 2 maximum      summer    93
-    ## 3 minimum      autumn     5
+    ## 3 minimum      autumn    21
     ## 4 minimum      spring    45
-    ## 5 minimum      winter    59
+    ## 5 minimum      winter    43
 
 #### Graphing
 

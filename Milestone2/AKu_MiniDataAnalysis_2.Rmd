@@ -39,9 +39,7 @@ Note: The research questions were slightly modified from Milestone 1 to suit the
 ```{r}
 flow_sample_PeriodMax <- flow_sample %>% 
   filter(extreme_type == 'maximum') %>%  
-  mutate(Period = case_when(year > 1960 ~ "Since_1960",
-                             year < 1960 ~ "Before_1960",
-                             TRUE ~ "UNK"))
+  mutate(Period = case_when(year > 1959 ~ "Since_1960", TRUE ~ "Before_1960"))
 print(flow_sample_PeriodMax)
 
 ```
@@ -88,11 +86,7 @@ print(Max_Box)
 ```{r}
 # Create new column for each season
 flow_sample_Seasons <- flow_sample %>% 
-   mutate(season = case_when(month < 3 ~ "winter",
-                                 month < 6 ~ "spring",
-                                 month < 9 ~ "summer",
-                                 month < 12 ~ "autumn",
-                                 TRUE ~ "winter"))
+   mutate(season = case_when(month < 3 ~ "winter", month < 6 ~ "spring", month < 9 ~ "summer", TRUE ~ "autumn"))
 print(flow_sample_Seasons)
 ```
 

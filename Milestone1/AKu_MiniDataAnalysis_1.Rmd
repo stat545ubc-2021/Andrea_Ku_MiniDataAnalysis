@@ -25,40 +25,38 @@ library(tidyverse)
 
 **1.1 Choose 4 of the datateachr packages that appeal to you**
 
- 1. building_permits
+ 1. building_permits: Acquired courtesy of The City of Vancouver’s Open Data Portal. It currently has 20680 rows and 14 columns.
  
- 2. flow_sample
+ 2. flow_sample: Acquired courtesy of The Government of Canada’s Historical Hydrometric Database. It currently has 218 rows and 7 columns.
  
- 3. steam_games
+ 3. steam_games: steam_games: Acquired courtesy of Kaggle. It currently has 40833 rows and 21 columns.
  
- 4. vancouver_trees
+ 4. vancouver_trees: Acquired courtesy of The City of Vancouver’s Open Data Portal. It currently has 146611 rows and 20 columns
  
 **1.2 Explore the dataset**
 
 Explore **building_permits** dataset
 
+##### The **building_permits** dataset has information about the building, including the location, the permit information, the contractor, and the intended use of the property.
+
 What dataframe?
 ```{r}
 class(building_permits)
 ```
+
 What dimensions in the data frame?
 ```{r}
 dim(building_permits)
 ```
-How many rows is the data? To guage data complexity
-```{r}
-nrow(building_permits)
-```
-How many columns is the data? To guage data complexity
-```{r}
-ncol(building_permits)
-```
+
 Print the data
 ```{r}
 glimpse(building_permits)
 ```
 
 Explore **flow_sample** dataset
+
+##### The **flow_sample** dataset has information about the flow at a specific station over several decades, including information about the time that the data was collected.
 
 What dataframe?
 ```{r}
@@ -68,14 +66,7 @@ What dimensions in the data frame?
 ```{r}
 dim(flow_sample)
 ```
-How many rows is the data? To guage data complexity
-```{r}
-nrow(flow_sample)
-```
-How many columns is the data? To guage data complexity
-```{r}
-ncol(flow_sample)
-```
+
 Print the data
 ```{r}
 glimpse(flow_sample)
@@ -91,20 +82,15 @@ What dimensions in the data frame?
 ```{r}
 dim(steam_games)
 ```
-How many rows is the data? To guage data complexity
-```{r}
-nrow(steam_games)
-```
-How many columns is the data? To guage data complexity
-```{r}
-ncol(steam_games)
-```
+
 Print the data
 ```{r}
 glimpse(steam_games)
 ```
 
 Explore **vancouver_trees** dataset
+
+##### The **vancouver_trees** dataset has information about the physical and identifing characteristics of the tree and the location of the tree within the city.
 
 What dataframe?
 ```{r}
@@ -115,13 +101,7 @@ What dimensions in the data frame?
 dim(vancouver_trees)
 ```
 How many rows is the data? To guage data complexity
-```{r}
-nrow(vancouver_trees)
-```
-How many columns is the data? To guage data complexity
-```{r}
-ncol(vancouver_trees)
-```
+
 Print the data
 ```{r}
 glimpse(vancouver_trees)
